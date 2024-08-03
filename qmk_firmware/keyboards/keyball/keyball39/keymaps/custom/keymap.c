@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum custom_keycodes {
     EISUU= SAFE_RANGE,
     KANA,
+    EISUU,
     VIM_ESC,
     INLINE,
     BLOCK,
@@ -32,7 +33,6 @@ enum custom_keycodes {
     FRAC,
     SQRT,
     LR,
-    PRC_SW,
 };
 
 
@@ -103,13 +103,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
             break;
-        case PRC_SW:
-            precision_switch(record->event.pressed);
-            return false;
-            break;
     }
     return true;
 }
+
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -157,3 +154,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______  , _______  , _______  , PRC_SW   ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______ , _______
   ),
 };
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Auto enable scroll mode when the highest layer is 3
+    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    return state;
+}
+
+#ifdef OLED_ENABLE
+
+#    include "lib/oledkit/oledkit.h"
+
+void oledkit_render_info_user(void) {
+    keyball_oled_render_keyinfo();
+    keyball_oled_render_ballinfo();
+    keyball_oled_render_layerinfo();
+}
+#endif
