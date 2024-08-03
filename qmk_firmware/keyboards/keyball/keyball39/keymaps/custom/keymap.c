@@ -21,11 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 enum custom_keycodes {
-    EISUU_LINUX = SAFE_RANGE,
+    KANA_LINUX = SAFE_RANGE,
+    EISUU_LINUX
     KANA_LINUX,
     VIM_ESC_LINUX,
-    EISUU,
     KANA,
+    EISUU,
     VIM_ESC,
     INLINE,
     BLOCK,
@@ -171,8 +172,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [6] = LAYOUT_universal(
     _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ ,
-    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , _______  , KC_BTN2 , ,
+    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , _______  , KC_BTN2 , _______ ,
     _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ ,
-    _______, _______  , _______  , _______ ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______ , _______
+    _______  , _______  , _______  , _______ ,   _______  , _______  ,     _______  , _______  , _______  , _______  , _______ , _______
   ),
 };
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // Auto enable scroll mode when the highest layer is 3
+    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    return state;
+}
+
+#ifdef OLED_ENABLE
+
+#    include "lib/oledkit/oledkit.h"
+
+void oledkit_render_info_user(void) {
+    keyball_oled_render_keyinfo();
+    keyball_oled_render_ballinfo();
+    keyball_oled_render_layerinfo();
+}
+#endif
