@@ -40,7 +40,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KANA:
             if(record->event.pressed) {
                 layer_on(2);
-                tap_code(KC_INT6);
+                tap_code(KC_INT4);
             } else {
                 layer_off(2);
             }
