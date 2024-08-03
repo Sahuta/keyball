@@ -27,5 +27,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define AUTO_MOUSE_DEFAULT_LAYER 6
 #define AUTO_MOUSE_TIME 500 
 
-#define PRECISION_ENABLE // 有効化
-#define PRECISION_CPI 3  // 下げた時のCPI (1/100の値を指定)
+// #define PRECISION_ENABLE // 有効化
+// #define PRECISION_CPI 3  // 下げた時のCPI (1/100の値を指定)

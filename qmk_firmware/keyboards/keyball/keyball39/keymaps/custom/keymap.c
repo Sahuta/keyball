@@ -19,7 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
-#include "precise.c"
+
+// #include "precise.c"
 
 enum custom_keycodes {
     EISUU_LINUX = SAFE_RANGE,
@@ -63,7 +64,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_INT5));
             }else{
             }
-            return false;
+        return false;
         case KANA:
             if(record->event.pressed) {
                 layer_on(2);
