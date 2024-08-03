@@ -19,13 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
+
 #include "precise.c"
 
 enum custom_keycodes {
-    EISUU_LINUX = SAFE_RANGE,
-    KANA_LINUX,
-    VIM_ESC_LINUX,
-    EISUU,
+    EISUU= SAFE_RANGE,
     KANA,
     VIM_ESC,
     INLINE,
@@ -42,7 +40,7 @@ enum custom_keycodes {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     
     switch (keycode) {
-        case KANA_LINUX:
+        case KANA:
             if(record->event.pressed) {
                 layer_on(2);
                 tap_code(KC_INT6);
@@ -50,7 +48,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(2);
             }
         return false;
-        case EISUU_LINUX:
+        case EISUU:
             if (record->event.pressed) {
                 layer_on(1);
                 tap_code(KC_INT5);
@@ -58,31 +56,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(1);
             }
         return false;
-        case VIM_ESC_LINUX:
-            if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_INT5));
-            }else{
-            }
-            return false;
-        case KANA:
-            if(record->event.pressed) {
-                layer_on(2);
-                tap_code(KC_LANGUAGE_1);
-            } else {
-                layer_off(2);
-            }
-        return false;
-        case EISUU:
-            if (record->event.pressed) {
-                layer_on(1);
-                tap_code(KC_LANGUAGE_2);
-            } else {
-                layer_off(1);
-            }
-        return false;
         case VIM_ESC:
             if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_LANGUAGE_2));
+                SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_INT5));
             }else{
             }
             return false;
@@ -139,11 +115,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (VIA)
   [0] = LAYOUT_universal(
-        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,
-        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    LT(3, KC_ENT),
-        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMMA,    KC_DOT,   KC_LEFT_BRACKET,
+        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                       KC_Y,    KC_U,    KC_I,       KC_O,     KC_P,
+        KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                       KC_H,    KC_J,    KC_K,       KC_L,     LT(3, KC_ENT),
+        KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                       KC_N,    KC_M,    KC_COMM,    KC_DOT,   KC_LEFT_BRACKET,
         VIM_ESC,    KC_LALT,  LGUI_T(KC_DEL),  LCTL_T(KC_BSPC),   EISUU,  LSFT_T(KC_SPACE), LSFT_T(KC_SPACE), KANA,   LSFT_T(KC_SPACE),  LSFT_T(KC_SPACE),   LSFT_T(KC_SPACE),   KC_RIGHT_BRACKET
-),
+  ),
   [1] = LAYOUT_universal(
         KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
         KC_BACKSLASH,    LSFT(KC_LEFT_BRACKET),    LSFT(KC_RIGHT_BRACKET),    LSFT(KC_6),  LSFT(KC_4),    LSFT(KC_3),    KC_MINUS,    KC_QUOTE,    KC_SEMICOLON,    KC_SLASH,
@@ -176,8 +152,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [6] = LAYOUT_universal(
     _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ ,
-    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , _______  , KC_BTN2 , ,
+    _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , _______  , KC_BTN2 , _______ ,
     _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ ,
-    _______, _______  , _______  , PRC_SW ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______ , _______
+    _______  , _______  , _______  , PRC_SW   ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______ , _______
   ),
 };
