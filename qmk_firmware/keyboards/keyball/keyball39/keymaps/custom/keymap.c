@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum custom_keycodes {
     KANA_LINUX = SAFE_RANGE,
     EISUU_LINUX
-    KANA_LINUX,
     VIM_ESC_LINUX,
     KANA,
     EISUU,
