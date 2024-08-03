@@ -33,7 +33,6 @@ enum custom_keycodes {
     FRAC,
     SQRT,
     LR,
-    PRC_SW,
 };
 
 
@@ -124,10 +123,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_LANGUAGE_2)SS_TAP(X_LEFT)SS_TAP(X_LEFT)"\\left"SS_TAP(X_RIGHT)"\\right"SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT));
             } else {
             }
-            return false;
-            break;
-        case PRC_SW:
-            precision_switch(record->event.pressed);
             return false;
             break;
     }
