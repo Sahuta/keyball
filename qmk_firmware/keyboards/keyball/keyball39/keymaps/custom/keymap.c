@@ -60,10 +60,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         case VIM_ESC:
             if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_INT5));
+                my_timer = timer_read();
+                register_code(KC_LSFT);
             }else{
+                unregister_code(KC_LSFT);
+                if (timer_elapsed(my_timer) < TAPPING_TERM) {
+                    SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_LANGUAGE_2));
+                }
             }
             return false;
+            break;
         case INLINE:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LANGUAGE_2)"$$"SS_TAP(X_LEFT));
