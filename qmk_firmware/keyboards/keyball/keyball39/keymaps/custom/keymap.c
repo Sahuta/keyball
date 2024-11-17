@@ -20,13 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
-const uint16_t PROGMEM test_combo1[] = {KC_J, KC_K, COMBO_END};
-const uint16_t PROGMEM test_combo2[] = {KC_K, KC_L, COMBO_END};
-combo_t key_combos[] = {
-    COMBO(test_combo1, KC_BTN1),
-    COMBO(test_combo2, KC_BTN2),
-};
-
 enum custom_keycodes {
     KANA = SAFE_RANGE,
     EISUU,

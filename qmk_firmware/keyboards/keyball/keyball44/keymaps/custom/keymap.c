@@ -16,9 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-#include precision.c
 #include "quantum.h"
-#include "lib/keyball/keyball.h"
 
 enum custom_keycodes {
     EISUU = SAFE_RANGE,
@@ -30,17 +28,15 @@ enum custom_keycodes {
     FRAC,
     SQRT,
     LR,
-    PRC_SW,
 };
 
-
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    static uint16_t my_timer;
     switch (keycode) {
         case KANA:
             if(record->event.pressed) {
                 layer_on(2);
-                tap_code(KC_LANGUAGE_1);
+                tap_code(KC_INT4);
             } else {
                 layer_off(2);
             }
@@ -48,22 +44,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case EISUU:
             if (record->event.pressed) {
                 layer_on(1);
-                tap_code(KC_LANGUAGE_2);
+                tap_code(KC_INT5);
             } else {
                 layer_off(1);
             }
         return false;
         case VIM_ESC:
             if (record->event.pressed) {
-                if (record->tap.count > 1) {
-                    SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_LANGUAGE_2));
-                } else {
-                    register_code(KC_LSFT);
-                }
+                my_timer = timer_read();
+                register_code(KC_LSFT);
             }else{
                 unregister_code(KC_LSFT);
+                if (timer_elapsed(my_timer) < TAPPING_TERM) {
+                    SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_LANGUAGE_2));
+                }
             }
             return false;
+            break;
         case INLINE:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LANGUAGE_2)"$$"SS_TAP(X_LEFT));
@@ -103,10 +100,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_LANGUAGE_2)SS_TAP(X_LEFT)SS_TAP(X_LEFT)"\\left"SS_TAP(X_RIGHT)"\\right"SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT));
             } else {
             }
-            return false;
-            break;
-        case PRC_SW:
-            precision_switch(record->event.pressed);
             return false;
             break;
     }
@@ -153,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [6] = LAYOUT_universal(
       _______  , _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ , _______  , 
-      _______  , _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , KC_BTN3 , KC_BTN2 ,  PRC_SW , _______  , 
+      _______  , _______  , _______  , _______  , _______  ,  _______  ,                           _______  , KC_BTN1  , KC_BTN3 , KC_BTN2 ,  _______ , _______  , 
       _______  , _______  , _______  , _______  , _______  ,  _______  ,                           _______  , _______  , _______  , _______ , _______ , _______  , 
       _______  , _______  , _______  ,  _______  , _______  ,     _______  , _______  , _______  , _______  , _______
     ),
