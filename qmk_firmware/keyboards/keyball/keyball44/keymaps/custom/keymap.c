@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 enum custom_keycodes {
-    EISUU = SAFE_RANGE,
-    KANA,
+    KANA = SAFE_RANGE,
+    EISUU,
     VIM_ESC,
     INLINE,
     BLOCK,
