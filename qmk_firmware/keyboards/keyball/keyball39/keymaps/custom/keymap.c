@@ -20,6 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
+const uint16_t PROGMEM test_combo1[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM test_combo2[] = {KC_K, KC_L, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(test_combo1, KC_BTN1),
+    COMBO(test_combo2, KC_BTN2),
+};
+
 enum custom_keycodes {
     KANA = SAFE_RANGE,
     EISUU,
@@ -32,10 +39,8 @@ enum custom_keycodes {
     LR
 };
 
-
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    
+    static uint16_t my_timer;
     switch (keycode) {
         case KANA:
             if(record->event.pressed) {
@@ -55,10 +60,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         case VIM_ESC:
             if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_INT5));
+                my_timer = timer_read();
+                register_code(KC_LSFT);
             }else{
+                unregister_code(KC_LSFT);
+                if (timer_elapsed(my_timer) < TAPPING_TERM) {
+                    SEND_STRING(SS_TAP(X_ESC)SS_TAP(X_LANGUAGE_2));
+                }
             }
             return false;
+            break;
         case INLINE:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_LANGUAGE_2)"$$"SS_TAP(X_LEFT));
